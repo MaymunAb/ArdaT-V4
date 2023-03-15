@@ -1,0 +1,113 @@
+local KeySystem = Instance.new("ScreenGui")
+local Guard = Instance.new("Frame")
+local UICorner = Instance.new("UICorner")
+local TextLabel = Instance.new("TextLabel")
+local TextLabel_2 = Instance.new("TextLabel")
+local TextEnter = Instance.new("TextBox")
+local UICorner_2 = Instance.new("UICorner")
+local Status = Instance.new("TextLabel")
+local Guard_2 = Instance.new("TextButton")
+local UICorner_3 = Instance.new("UICorner")
+
+KeySystem.Name = "KeySystem"
+KeySystem.Parent = game.CoreGui
+
+Guard.Name = "Guard"
+Guard.Parent = KeySystem
+Guard.BackgroundColor3 = Color3.fromRGB(108, 0, 185)
+Guard.Position = UDim2.new(0.317180604, 0, 0.355421662, 0)
+Guard.Size = UDim2.new(0, 331, 0, 143)
+Guard.Active = true
+Guard.Visible = true
+
+UICorner.Parent = Guard
+
+TextLabel.Parent = Guard
+TextLabel.BackgroundColor3 = Color3.fromRGB(108, 0, 185)
+TextLabel.BorderSizePixel = 0
+TextLabel.Position = UDim2.new(0, 0, 0.0489510484, 0)
+TextLabel.Size = UDim2.new(0, 140, 0, 32)
+TextLabel.Font = Enum.Font.Gotham
+TextLabel.Text = "ArdaT  V4"
+TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel.TextScaled = true
+TextLabel.TextSize = 29.000
+TextLabel.TextWrapped = true
+
+TextLabel_2.Parent = Guard
+TextLabel_2.BackgroundColor3 = Color3.fromRGB(108, 0, 185)
+TextLabel_2.BorderSizePixel = 0
+TextLabel_2.Position = UDim2.new(0.577039242, 0, 0.0489510484, 0)
+TextLabel_2.Size = UDim2.new(0, 140, 0, 32)
+TextLabel_2.Font = Enum.Font.Gotham
+TextLabel_2.Text = "KeySystem"
+TextLabel_2.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel_2.TextScaled = true
+TextLabel_2.TextSize = 29.000
+TextLabel_2.TextWrapped = true
+
+TextEnter.Name = "TextEnter"
+TextEnter.Parent = Guard
+TextEnter.BackgroundColor3 = Color3.fromRGB(108, 0, 185)
+TextEnter.Position = UDim2.new(0, 0, 0.650349617, 0)
+TextEnter.Size = UDim2.new(0, 200, 0, 50)
+TextEnter.Font = Enum.Font.Gotham
+TextEnter.PlaceholderColor3 = Color3.fromRGB(255, 255, 255)
+TextEnter.Text = ""
+TextEnter.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextEnter.TextSize = 14.000
+
+UICorner_2.Parent = TextEnter
+
+Status.Name = "Status"
+Status.Parent = Guard
+Status.BackgroundColor3 = Color3.fromRGB(108, 0, 185)
+Status.BorderSizePixel = 0
+Status.Position = UDim2.new(0, 0, 0.398601413, 0)
+Status.Size = UDim2.new(0, 200, 0, 29)
+Status.Font = Enum.Font.Gotham
+Status.Text = "Status:KeyNotEntered"
+Status.TextColor3 = Color3.fromRGB(255, 255, 255)
+Status.TextScaled = true
+Status.TextSize = 21.000
+Status.TextWrapped = true
+
+Guard_2.Name = "Guard"
+Guard_2.Parent = Guard
+Guard_2.BackgroundColor3 = Color3.fromRGB(108, 0, 185)
+Guard_2.Position = UDim2.new(0.782477319, 0, 0.64335674, 0)
+Guard_2.Size = UDim2.new(0, 72, 0, 50)
+Guard_2.Font = Enum.Font.Gotham
+Guard_2.Text = "Check"
+Guard_2.TextColor3 = Color3.fromRGB(255, 255, 255)
+Guard_2.TextScaled = true
+Guard_2.TextSize = 14.000
+Guard_2.TextWrapped = true
+
+UICorner_3.Parent = Guard_2
+
+-- Scripts:
+
+local function GRYVPO_fake_script() -- Guard.KeySystem 
+	local script = Instance.new('LocalScript', Guard)
+
+	local Gui = script.Parent.Parent.Guard
+	local Text = script.Parent.TextEnter
+	local Status = script.Parent.Status
+	local GuardClick = script.Parent.Guard
+	
+	Status.Text = "Enter The Key"
+	
+	GuardClick.MouseButton1Down:Connect(function()
+		if Text.Text == "ArdaT-V4 Is Here!" then
+			Status.Text = "Correct Key"
+			wait(1)
+			Gui.Visible = false
+		else
+			Status.Text = "Wrong Key"
+			wait(1)
+			Status.Text = "Enter The Key"
+		end
+	end)
+end
+coroutine.wrap(GRYVPO_fake_script)()
