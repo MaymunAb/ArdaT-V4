@@ -1,1 +1,174 @@
+local Town = Instance.new("ScreenGui")
+local Town_2 = Instance.new("Frame")
+local UICorner = Instance.new("UICorner")
+local TextLabel = Instance.new("TextLabel")
+local UICorner_2 = Instance.new("UICorner")
+local TextLabel_2 = Instance.new("TextLabel")
+local UICorner_3 = Instance.new("UICorner")
+local Aimbot = Instance.new("TextButton")
+local Esp = Instance.new("TextButton")
+local Admin = Instance.new("TextButton")
 
+Town.Name = "Town"
+Town.Parent = game.CoreGui
+
+Town_2.Name = "Town"
+Town_2.Parent = Town
+Town_2.BackgroundColor3 = Color3.fromRGB(108, 0, 185)
+Town_2.Position = UDim2.new(0.317180604, 0, 0.355421662, 0)
+Town_2.Size = UDim2.new(0, 331, 0, 143)
+Town_2.Active = true
+Town_2.Visible = true
+
+UICorner.Parent = Town_2
+
+TextLabel.Parent = Town_2
+TextLabel.BackgroundColor3 = Color3.fromRGB(108, 0, 185)
+TextLabel.BorderSizePixel = 0
+TextLabel.Size = UDim2.new(0, 140, 0, 32)
+TextLabel.Font = Enum.Font.Gotham
+TextLabel.Text = "ArdaT  V4"
+TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel.TextScaled = true
+TextLabel.TextSize = 29.000
+TextLabel.TextWrapped = true
+
+UICorner_2.Parent = TextLabel
+
+TextLabel_2.Parent = Town_2
+TextLabel_2.BackgroundColor3 = Color3.fromRGB(108, 0, 185)
+TextLabel_2.BorderSizePixel = 0
+TextLabel_2.Position = UDim2.new(0.474320233, 0, 0, 0)
+TextLabel_2.Size = UDim2.new(0, 174, 0, 32)
+TextLabel_2.Font = Enum.Font.Gotham
+TextLabel_2.Text = "Detected Game:Town"
+TextLabel_2.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel_2.TextScaled = true
+TextLabel_2.TextSize = 29.000
+TextLabel_2.TextWrapped = true
+
+UICorner_3.Parent = TextLabel_2
+
+Aimbot.Name = "Aimbot"
+Aimbot.Parent = Town_2
+Aimbot.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Aimbot.BackgroundTransparency = 1.000
+Aimbot.Position = UDim2.new(0.0362537764, 0, 0.447552443, 0)
+Aimbot.Size = UDim2.new(0, 75, 0, 40)
+Aimbot.Font = Enum.Font.Gotham
+Aimbot.Text = "Aimbot"
+Aimbot.TextColor3 = Color3.fromRGB(255, 255, 255)
+Aimbot.TextScaled = true
+Aimbot.TextSize = 14.000
+Aimbot.TextWrapped = true
+Aimbot.MouseButton1Down:Connect(function()
+	local Camera = workspace.CurrentCamera
+	local Players = game:GetService("Players")
+	local RunService = game:GetService("RunService")
+	local UserInputService = game:GetService("UserInputService")
+	local TweenService = game:GetService("TweenService")
+	local LocalPlayer = Players.LocalPlayer
+	local Holding = false
+
+	_G.AimbotEnabled = true
+	_G.TeamCheck = false -- If set to true then the script would only lock your aim at enemy team members.
+	_G.AimPart = "Head" -- Where the aimbot script would lock at.
+	_G.Sensitivity = 0 -- How many seconds it takes for the aimbot script to officially lock onto the target's aimpart.
+
+	local function GetClosestPlayer()
+		local MaximumDistance = math.huge
+		local Target = nil
+
+		coroutine.wrap(function()
+			wait(20); MaximumDistance = math.huge -- Reset the MaximumDistance so that the Aimbot doesn't remember it as a very small variable and stop capturing players...
+		end)()
+
+		for _, v in next, Players:GetPlayers() do
+			if v.Name ~= LocalPlayer.Name then
+				if _G.TeamCheck == true then
+					if v.Team ~= LocalPlayer.Team then
+						if v.Character ~= nil then
+							if v.Character:FindFirstChild("HumanoidRootPart") ~= nil then
+								if v.Character:FindFirstChild("Humanoid") ~= nil and v.Character:FindFirstChild("Humanoid").Health ~= 0 then
+									local ScreenPoint = Camera:WorldToScreenPoint(v.Character:WaitForChild("HumanoidRootPart", math.huge).Position)
+									local VectorDistance = (Vector2.new(UserInputService:GetMouseLocation().X, UserInputService:GetMouseLocation().Y) - Vector2.new(ScreenPoint.X, ScreenPoint.Y)).Magnitude
+
+									if VectorDistance < MaximumDistance then
+										Target = v
+										MaximumDistance = VectorDistance
+									end
+								end
+							end
+						end
+					end
+				else
+					if v.Character ~= nil then
+						if v.Character:FindFirstChild("HumanoidRootPart") ~= nil then
+							if v.Character:FindFirstChild("Humanoid") ~= nil and v.Character:FindFirstChild("Humanoid").Health ~= 0 then
+								local ScreenPoint = Camera:WorldToScreenPoint(v.Character:WaitForChild("HumanoidRootPart", math.huge).Position)
+								local VectorDistance = (Vector2.new(UserInputService:GetMouseLocation().X, UserInputService:GetMouseLocation().Y) - Vector2.new(ScreenPoint.X, ScreenPoint.Y)).Magnitude
+
+								if VectorDistance < MaximumDistance then
+									Target = v
+									MaximumDistance = VectorDistance
+								end
+							end
+						end
+					end
+				end
+			end
+		end
+
+		return Target
+	end
+
+	UserInputService.InputBegan:Connect(function(Input)
+		if Input.UserInputType == Enum.UserInputType.MouseButton2 then
+			Holding = true
+		end
+	end)
+
+	UserInputService.InputEnded:Connect(function(Input)
+		if Input.UserInputType == Enum.UserInputType.MouseButton2 then
+			Holding = false
+		end
+	end)
+
+	RunService.RenderStepped:Connect(function()
+		if Holding == true and _G.AimbotEnabled == true then
+			TweenService:Create(Camera, TweenInfo.new(_G.Sensitivity, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {CFrame = CFrame.new(Camera.CFrame.Position, GetClosestPlayer().Character[_G.AimPart].Position)}):Play()
+		end
+	end)
+end)
+
+Esp.Name = "Esp"
+Esp.Parent = Town_2
+Esp.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Esp.BackgroundTransparency = 1.000
+Esp.Position = UDim2.new(0.386706948, 0, 0.447552443, 0)
+Esp.Size = UDim2.new(0, 75, 0, 40)
+Esp.Font = Enum.Font.Gotham
+Esp.Text = "Esp"
+Esp.TextColor3 = Color3.fromRGB(255, 255, 255)
+Esp.TextScaled = true
+Esp.TextSize = 14.000
+Esp.TextWrapped = true
+Esp.MouseButton1Down:Connect(function()
+	loadstring(game:HttpGet('https://raw.githubusercontent.com/ic3w0lf22/Unnamed-ESP/master/UnnamedESP.lua'))()
+end)
+
+Admin.Name = "Admin"
+Admin.Parent = Town_2
+Admin.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Admin.BackgroundTransparency = 1.000
+Admin.Position = UDim2.new(0.737160146, 0, 0.447552443, 0)
+Admin.Size = UDim2.new(0, 75, 0, 40)
+Admin.Font = Enum.Font.Gotham
+Admin.Text = "Infinite Yield"
+Admin.TextColor3 = Color3.fromRGB(255, 255, 255)
+Admin.TextScaled = true
+Admin.TextSize = 14.000
+Admin.TextWrapped = true
+Admin.MouseButton1Down:Connect(function()
+	loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()
+end)
